@@ -36,12 +36,19 @@
           <div class="star-wrapper">
             <star :size="48" :score="seller.score"></star>
           </div>
-          <ul class="supports">
-            <li class="support" v-for="support in seller.supports">
-              <span class="icon" :class="classMap[support.type]"></span>
-              <span class="text">{{ support.description }}</span>
-            </li>
-          </ul>
+          <info title="优惠信息">
+            <ul slot="info-content" v-if="seller.supports" class="supports">
+              <li class="support" v-for="support in seller.supports">
+                <span class="icon" :class="classMap[support.type]"></span>
+                <span class="text">{{ support.description }}</span>
+              </li>
+           </ul>
+          </info>
+          <info title="商家公告">
+            <div slot="info-content" class="bulletin">
+              <p>{{ seller.bulletin }}</p>
+            </div>
+          </info>
         </div>
       </div>
       <div class="detail-close">
@@ -53,6 +60,7 @@
 
 <script type="text/ecmascript-6">
   import star from 'components/star/star';
+  import info from 'components/info/info';
 
   export default {
     props: {
@@ -66,7 +74,7 @@
       };
     },
     components: {
-      star
+      star, info
     },
     methods: {
       showDetail () {
@@ -210,8 +218,6 @@
       width: 100%
       .detail-main
         margin-top: 64px
-        padding-right: 36px
-        padding-left: 36px
         padding-bottom: 64px
         .name
           line-height: 16px
@@ -222,9 +228,13 @@
           margin-top: 16px
           text-align: center
         .supports
-          margin-top: 28px
+          margin: 0 auto
           .support
             margin-bottom: 12px
+            padding: 0 12px
+            font-size: 0
+            &:last-child
+              margin-bottom: 0
             .icon
               display: inline-block
               vertical-align: top
@@ -244,8 +254,16 @@
               &.special
                 bg-image('special_1')
             .text
+              vertical-align: top
               font-size: 12px
-              line-height: 12px
+              line-height: 16px
+        .bulletin
+          margin: 0 auto
+          p
+            font-size: 12px
+            font-weight: 200
+            line-height: 24px
+            padding: 0 12px
     .detail-close
       position: relative
       width: 32px

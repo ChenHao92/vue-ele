@@ -6,7 +6,7 @@
       <div class="tab-item"><a v-link="{path:'/ratings'}">评价</a></div>
       <div class="tab-item"><a v-link="{path:'/sellers'}">商家</a></div>
     </div>
-    <router-view></router-view>
+    <router-view :seller="sellers"></router-view>
   </div>
 </template>
 
@@ -26,7 +26,6 @@
         response = response.body;
         if (response.errno === ERR_OK) {
           this.sellers = response.data;
-          console.log(this.sellers);
         }
       });
     },

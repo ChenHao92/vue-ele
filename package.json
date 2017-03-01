@@ -15,7 +15,8 @@
     "stylus-loader": "^2.5.0",
     "vue": "^1.0.21",
     "vue-router": "^0.7.13",
-    "vue-resource": "^1.2.0"
+    "vue-resource": "^1.2.0",
+    "better-scroll": "^0.1.7"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
