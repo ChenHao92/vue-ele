@@ -26,7 +26,7 @@
                 <div class="price">
                   <span class="nowPrice"><p>¥</p>{{ food.price }}</span>
                   <span v-show="food.oldPrice" class="oldPrice">¥{{ food.oldPrice }}</span>
-                  <i class="icon-add_circle"></i>
+                  <cart-control :food="food"></cart-control>
                 </div>
               </div>
             </li>
@@ -34,7 +34,7 @@
         </li>
       </ul>
     </div>
-    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
 </template>
 
@@ -42,6 +42,7 @@
   const ERR_OK = 0;
   import BScroll from 'better-scroll';
   import shopcart from 'components/shopcart/shopcart';
+  import cartControl from 'components/cartControl/cartControl';
 
   export default {
     props: {
@@ -66,6 +67,17 @@
           }
         }
         return 0;
+      },
+      selectFoods () {
+        let foods = [];
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if (food.count > 0) {
+              foods.push(food);
+            }
+          });
+        });
+        return foods;
       }
     },
     created () {
@@ -88,7 +100,8 @@
         });
 
         this.foodsScroll = new BScroll(this.$els.foodsWrapper, {
-          probeType: 3
+          probeType: 3,
+          click: true
         });
 
         this.foodsScroll.on('scroll', (pos) => {
@@ -115,7 +128,8 @@
       }
     },
     components: {
-      shopcart
+      shopcart,
+      cartControl
     }
   };
 </script>
@@ -220,6 +234,8 @@
                 line-height: 10px
                 color: rgb(147,153,159)
             .price
+              position: relative
+              margin-top: 8px
               .nowPrice
                 font-size: 14px
                 color: rgb(240,20,20)
@@ -235,10 +251,11 @@
                 line-height: 10px
                 text-decoration: line-through
                 color: rgb(147,153,159)
-              .icon-add_circle
+              .cartControl
                 position: absolute
-                right: 0
-                font-size: 24px
-                line-height: 24px
-                color: rgb(0,160,220)
+                right: 18px
+                top: 0
+                vertical-align: top
+                display: inline-block
+                font-size: 0
 </style>
