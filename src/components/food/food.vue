@@ -1,0 +1,214 @@
+<!--
+  @Author: ch
+  @Date:   2017-03-06 13:45:30
+  @Last Modified by:   ch
+  @Last Modified time: 2017-03-06 13:45:30
+-->
+<template>
+  <div v-show="showFlag" class="food-detail" transition="food" v-el:food-detail>
+    <div class="food-content">
+      <div class="food-image">
+        <img :src="food.image" alt="food-image">
+        <div class="back">
+          <i class="icon-arrow_lift" @click="back"></i>
+        </div>
+      </div>
+      <div class="content">
+        <div class="title">{{food.name}}</div>
+        <div class="detail">
+          <span class="sell-count">月售{{food.sellCount}}份</span>
+          <span class="rating">好评率{{food.rating}}%</span>
+        </div>
+        <div class="price">
+          <div class="now-price"><span>¥</span>{{food.price}}</div>
+          <div class="old-price" v-if="food.oldPrice"><span>¥</span>{{food.oldPrice}}</div>
+          <div class="cart-control-wrapper">
+            <cart-control :food="food" v-show="food.count && food.count>0"></cart-control>
+            <div class="add-to-cartControl" v-show="!food.count || food.count===0" @click="addFood($event)" transition="fade">加入购物车</div>
+          </div>
+        </div>
+        <div class="description">
+          <div class="title">商品介绍</div>
+          <div class="info">{{food.info}}</div>
+        </div>
+        <div class="rating">
+          <div class="title">商品评价</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import Vue from 'vue';
+  import BScroll from 'better-scroll';
+  import cartControl from 'components/cartControl/cartControl';
+
+  export default {
+    props: {
+      food: {
+        type: Object
+      }
+    },
+    data () {
+      return {
+        showFlag: false
+      };
+    },
+    methods: {
+      show () {
+        this.showFlag = true;
+        this.$nextTick(() => {
+          if (!this.scroll) {
+            this.scroll = new BScroll(this.$els.foodDetail, {
+              click: true
+            });
+          } else {
+            this.scroll.refresh();
+          }
+        });
+      },
+      back () {
+        this.showFlag = false;
+      },
+      addFood (event) {
+        if (!event._constructed) {
+          return;
+        }
+        if (!this.food.count) {
+          Vue.set(this.food, 'count', 1);
+        } else {
+          this.food.count++;
+        }
+      }
+    },
+    components: {
+      cartControl
+    }
+  };
+</script>
+
+<style lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/mixin.styl"
+
+  .food-detail
+    position: fixed
+    top: 0
+    left: 0
+    bottom: 48px
+    width: 100%
+    background: #fff
+    z-index: 30
+    &.food-transition
+      transition: all 0.3s linear
+      transform: translate3d(0,0,0)
+    &.food-enter, &.food-leave
+      transform: translate3d(100%,0,0)
+    .food-content
+      .food-image
+        position: relative
+        width: 100%
+        height: 0
+        padding-top: 100%
+        img
+          position: absolute
+          top: 0
+          left: 0
+          width: 100%
+          height: 100%
+        .back
+          position: absolute
+          top: 15px
+          left: 0
+          .icon-arrow_lift
+            padding: 12px
+            font-size: 20px
+            color: #fff
+      .content
+        padding: 18px
+        .title
+          font-size: 14px
+          line-height: 14px
+          font-weight: 700
+          margin-bottom: 8px
+          color: rgb(7,17,27)
+        .detail
+          margin-bottom: 18px
+          font-size: 10px
+          line-height: 10px
+          color: rgb(147,153,159)
+          .sell-count
+            margin-right: 12px
+        .price
+          font-size: 10px
+          font-weight: 700
+          padding-bottom: 18px
+          border-1px(rgba(7,17,27,0.1))
+          .now-price
+            display: inline-block
+            vertical-align: top
+            font-size: 14px
+            line-height: 24px
+            color: rgb(240,20,20)
+            margin-right: 5px
+          .old-price
+            display: inline-block
+            line-height: 24px
+            color: rgb(147,153,159)
+            text-decoration: line-through
+          .cart-control-wrapper
+            display: inline-block
+            position: absolute
+            right: 0
+            height: 24px
+            width: 75px
+            .cartControl
+              position: absolute
+              right: 0
+            .add-to-cartControl
+              position: absolute
+              right: 0
+              width: 74px
+              height: 12px
+              padding: 6px
+              text-align: center
+              border-radius: 12px
+              background-color: rgb(0,160,220)
+              font-size: 10px
+              line-height: 12px
+              color: #fff
+             /* &.fade-transition
+                transition: all 0.2s
+                opacity: 1
+              &.fade-enter, &.fade-leave
+                opacity: 0*/
+        .description
+          margin: 16px 0
+          padding: 18px 0
+          border-top: 1px solid rgba(7,17,27,0.1)
+          border-1px(rgba(7,17,27,0.1))
+          .title
+            font-size: 14px
+            line-height: 14px
+            font-weight: normal
+            color: rgb(7,17,27)
+            margin-bottom: 6px
+          .info
+            width: 100%
+            margin: 0
+            padding: 0 8px
+            box-sizing: border-box
+            font-size: 12px
+            line-height: 24px
+            font-weight: 200
+            color: rgb(77,85,93)
+        .ratings
+          border-top: 1px solid rgba(7,17,27,0.1)
+          padding: 18px 0
+          .title
+            font-size: 14px
+            line-height: 14px
+            font-weight: normal
+            color: rgb(7,17,27)
+            margin-bottom: 6px
+</style>
