@@ -60,11 +60,32 @@
 <style lang="stylus" rel="stylesheet/stylus">
   .rating-select
     .rating-type
-      height: 28px
-      font-size: 12px
+      font-size: 0px
       line-height: 16px
       span
+        display: inline-block
         padding: 8px 12px
+        font-size: 12px
+        margin-right: 8px
+        border-radius: 2px
       .all
         background: rgb(0,160,220)
+        color: #fff
+      .positive
+        background: rgba(0,160,220,0.2)
+        color: rgb(77,85,93)
+      .negative
+        background: rgba(77,85,93,0.2)
+        color: rgb(77,85,93)
+    .switch
+      margin: 12px 0
+      .icon-check_circle
+        vertical-align: middle
+        font-size: 24px
+        line-height: 24px
+        color: rgb(147,153,159)
+      span
+        font-size: 12px
+        color: rgb(147,153,159)
+        line-height: 24px
 </style>
