@@ -6,35 +6,36 @@
 -->
 <template>
   <div v-show="showFlag" class="food-detail" transition="food" v-el:food-detail>
-    <div class="food-content">
-      <div class="food-image">
-        <img :src="food.image" alt="food-image">
-        <div class="back">
-          <i class="icon-arrow_lift" @click="back"></i>
-        </div>
-      </div>
-      <div class="content">
-        <div class="title">{{food.name}}</div>
-        <div class="detail">
-          <span class="sell-count">月售{{food.sellCount}}份</span>
-          <span class="rating">好评率{{food.rating}}%</span>
-        </div>
-        <div class="price">
-          <div class="now-price"><span>¥</span>{{food.price}}</div>
-          <div class="old-price" v-if="food.oldPrice"><span>¥</span>{{food.oldPrice}}</div>
-          <div class="cart-control-wrapper">
-            <cart-control :food="food" v-show="food.count && food.count>0"></cart-control>
-            <div class="add-to-cartControl" v-show="!food.count || food.count===0" @click="addFood($event)" transition="fade">加入购物车</div>
+    <div class="content">
+      <div class="food-content">
+        <div class="food-image">
+          <img :src="food.image" alt="food-image">
+          <div class="back">
+            <i class="icon-arrow_lift" @click="back"></i>
           </div>
         </div>
-        <div class="description">
-          <div class="title">商品介绍</div>
-          <div class="info">{{food.info}}</div>
-        </div>
-        <div class="rating">
-          <div class="title">商品评价</div>
+        <div class="content">
+          <div class="title">{{food.name}}</div>
+          <div class="detail">
+            <span class="sell-count">月售{{food.sellCount}}份</span>
+            <span class="rating">好评率{{food.rating}}%</span>
+          </div>
+          <div class="price">
+            <div class="now-price"><span>¥</span>{{food.price}}</div>
+            <div class="old-price" v-if="food.oldPrice"><span>¥</span>{{food.oldPrice}}</div>
+            <div class="cart-control-wrapper">
+              <cart-control :food="food" v-show="food.count && food.count>0"></cart-control>
+              <div class="add-to-cartControl" v-show="!food.count || food.count===0" @click="addFood($event)" transition="fade">加入购物车</div>
+            </div>
+          </div>
         </div>
       </div>
+      <split></split>
+      <div class="description">
+        <div class="title">商品介绍</div>
+        <div class="info">{{food.info}}</div>
+      </div>
+      <split></split>
     </div>
   </div>
 </template>
@@ -43,6 +44,7 @@
   import Vue from 'vue';
   import BScroll from 'better-scroll';
   import cartControl from 'components/cartControl/cartControl';
+  import split from 'components/split/split';
 
   export default {
     props: {
@@ -83,7 +85,8 @@
       }
     },
     components: {
-      cartControl
+      cartControl,
+      split
     }
   };
 </script>
@@ -140,10 +143,10 @@
           .sell-count
             margin-right: 12px
         .price
+          position: relative
           font-size: 10px
           font-weight: 700
           padding-bottom: 18px
-          border-1px(rgba(7,17,27,0.1))
           .now-price
             display: inline-block
             vertical-align: top
@@ -177,38 +180,21 @@
               font-size: 10px
               line-height: 12px
               color: #fff
-             /* &.fade-transition
-                transition: all 0.2s
-                opacity: 1
-              &.fade-enter, &.fade-leave
-                opacity: 0*/
-        .description
-          margin: 16px 0
-          padding: 18px 0
-          border-top: 1px solid rgba(7,17,27,0.1)
-          border-1px(rgba(7,17,27,0.1))
-          .title
-            font-size: 14px
-            line-height: 14px
-            font-weight: normal
-            color: rgb(7,17,27)
-            margin-bottom: 6px
-          .info
-            width: 100%
-            margin: 0
-            padding: 0 8px
-            box-sizing: border-box
-            font-size: 12px
-            line-height: 24px
-            font-weight: 200
-            color: rgb(77,85,93)
-        .ratings
-          border-top: 1px solid rgba(7,17,27,0.1)
-          padding: 18px 0
-          .title
-            font-size: 14px
-            line-height: 14px
-            font-weight: normal
-            color: rgb(7,17,27)
-            margin-bottom: 6px
+    .description
+      padding: 18px
+      .title
+        font-size: 14px
+        line-height: 14px
+        font-weight: 500
+        color: rgb(7,17,27)
+        margin-bottom: 6px
+      .info
+        width: 100%
+        margin: 0
+        padding: 0 8px
+        box-sizing: border-box
+        font-size: 12px
+        line-height: 24px
+        font-weight: 200
+        color: rgb(77,85,93)
 </style>
