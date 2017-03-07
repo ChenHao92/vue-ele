@@ -36,6 +36,10 @@
         <div class="info">{{food.info}}</div>
       </div>
       <split></split>
+      <div class="rating">
+        <h1 class="title">商品评价</h1>
+        <rating-select></rating-select>
+      </div>
     </div>
   </div>
 </template>
@@ -45,6 +49,7 @@
   import BScroll from 'better-scroll';
   import cartControl from 'components/cartControl/cartControl';
   import split from 'components/split/split';
+  import ratingSelect from 'components/ratingSelect/ratingSelect';
 
   export default {
     props: {
@@ -86,7 +91,8 @@
     },
     components: {
       cartControl,
-      split
+      split,
+      ratingSelect
     }
   };
 </script>
@@ -197,4 +203,14 @@
         line-height: 24px
         font-weight: 200
         color: rgb(77,85,93)
+    .rating
+      padding: 18px
+      .title
+        font-size: 14px
+        line-height: 14px
+        font-weight: 500
+        color: rgb(7,17,27)
+        margin-bottom: 6px
+      .rating-select
+        margin-top: 12px
 </style>
