@@ -38,7 +38,7 @@
       <split></split>
       <div class="rating">
         <h1 class="title">商品评价</h1>
-        <rating-select></rating-select>
+        <rating-select :select-type="selectType" :is-only-content="isOnlyContent" :desc="desc" :ratings="food.ratings"></rating-select>
       </div>
     </div>
   </div>
@@ -51,6 +51,10 @@
   import split from 'components/split/split';
   import ratingSelect from 'components/ratingSelect/ratingSelect';
 
+  const ALL = 2;
+  // const NEGATIVE = 1;
+  // const POSITIVE = 0;
+
   export default {
     props: {
       food: {
@@ -59,7 +63,14 @@
     },
     data () {
       return {
-        showFlag: false
+        showFlag: false,
+        selectType: ALL,
+        isOnlyContent: true,
+        desc: {
+          all: '全部',
+          positive: '推荐',
+          negative: '吐槽'
+        }
       };
     },
     methods: {
@@ -93,6 +104,19 @@
       cartControl,
       split,
       ratingSelect
+    },
+    events: {
+      'ratingTypeChanged': function () {
+        this.$nextTick(() => {
+          if (!this.scroll) {
+            this.scroll = new BScroll(this.$els.foodDetail, {
+              click: true
+            });
+          } else {
+            this.scroll.refresh();
+          }
+        });
+      }
     }
   };
 </script>
