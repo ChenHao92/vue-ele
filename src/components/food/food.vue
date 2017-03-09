@@ -39,6 +39,19 @@
       <div class="rating">
         <h1 class="title">商品评价</h1>
         <rating-select :select-type="selectType" :is-only-content="isOnlyContent" :desc="desc" :ratings="food.ratings"></rating-select>
+        <ul class="ratings">
+          <li class="rating" v-for="rating in showRatings" v-show="selectType === 2 || rating.rateType === selectType">
+            <div class="rating-info">
+              <span class="time">{{rating.rateTime | formatDate}}</span>
+              <span class="user-name">{{rating.username}}</span>
+              <img class="user-avatar" :src="rating.avatar">
+            </div>
+            <div class="rating-content">
+              <i :class="classType[rating.rateType]"></i>
+              <span>{{rating.text}}</span>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -50,6 +63,7 @@
   import cartControl from 'components/cartControl/cartControl';
   import split from 'components/split/split';
   import ratingSelect from 'components/ratingSelect/ratingSelect';
+  import {formatDate} from 'common/js/date';
 
   const ALL = 2;
   // const NEGATIVE = 1;
@@ -58,7 +72,8 @@
   export default {
     props: {
       food: {
-        type: Object
+        type: Object,
+        default: []
       }
     },
     data () {
@@ -70,8 +85,23 @@
           all: '全部',
           positive: '推荐',
           negative: '吐槽'
-        }
+        },
+        classType: ['icon-thumb_up', 'icon-thumb_down']
       };
+    },
+    computed: {
+      showRatings () {
+        if (!this.showFlag) {
+          return;
+        }
+        if (!this.isOnlyContent) {
+          return this.food.ratings;
+        } else {
+          return this.food.ratings.filter((rating) => {
+            return rating.text !== '';
+          });
+        }
+      }
     },
     methods: {
       show () {
@@ -106,7 +136,8 @@
       ratingSelect
     },
     events: {
-      'ratingTypeChanged': function () {
+      'ratingTypeChanged': function (type) {
+        this.selectType = type;
         this.$nextTick(() => {
           if (!this.scroll) {
             this.scroll = new BScroll(this.$els.foodDetail, {
@@ -116,6 +147,24 @@
             this.scroll.refresh();
           }
         });
+      },
+      'isOnlyContentChanged': function (value) {
+        this.isOnlyContent = value;
+        this.$nextTick(() => {
+          if (!this.scroll) {
+            this.scroll = new BScroll(this.$els.foodDetail, {
+              click: true
+            });
+          } else {
+            this.scroll.refresh();
+          }
+        });
+      }
+    },
+    filters: {
+      formatDate (time) {
+        let date = new Date(time);
+        return formatDate(date, 'yyyy-MM-dd hh:mm');
       }
     }
   };
@@ -237,4 +286,44 @@
         margin-bottom: 6px
       .rating-select
         margin-top: 12px
+      .ratings
+        .rating
+          width: 100%
+          padding: 16px 0
+          border-bottom: 1px solid rgba(7,17,27,0.1)
+          .rating-info
+            position: relative
+            height: 12px
+            font-size: 10px
+            line-height: 12px
+            padding-bottom: 6px
+            color: rgb(147,153,159)
+            .time
+              position: absolute
+              left: 0
+            .user-name
+              position: absolute
+              right: 18px
+            .user-avatar
+              position: absolute
+              right: 0
+              width: 12px
+              height: 12px
+              border-radius: 50%
+          .rating-content
+            font-size: 0
+            .icon-thumb_up
+              font-size: 12px
+              line-height: 24px
+              margin-right: 4px
+              color: rgb(0,160,220)
+            .icon-thumb_down
+              font-size: 12px
+              line-height: 24px
+              margin-right: 4px
+              color: rgb(147,153,159)
+            span
+              font-size: 12px
+              color: rgb(7,17,27)
+              line-height: 16px
 </style>
